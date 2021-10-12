@@ -8,6 +8,7 @@ using Xamarin.Forms;
 
 namespace AzureZumoApp
 {
+    //https://entityframeworkcore.com/knowledge-base/43797126/can-azure-mobile-services-offline-sync-be-used-with-entity-framework-core-
     public partial class App
     {
         public App(IPlatformInitializer initializer)
