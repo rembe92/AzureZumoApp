@@ -1,7 +1,10 @@
 using AzureZumoApp.ViewModels;
 using AzureZumoApp.Views;
+using Microsoft.WindowsAzure.MobileServices;
+using Microsoft.WindowsAzure.MobileServices.SQLiteStore;
 using Prism;
 using Prism.Ioc;
+using System.IO;
 using Xamarin.Essentials.Implementation;
 using Xamarin.Essentials.Interfaces;
 using Xamarin.Forms;
@@ -29,6 +32,10 @@ namespace AzureZumoApp
 
             containerRegistry.RegisterForNavigation<NavigationPage>();
             containerRegistry.RegisterForNavigation<MainPage, MainPageViewModel>();
+
+            //containerRegistry.RegisterSingleton<MobileServiceClient>(m => new MobileServiceClient(Constant.AzureUrl, new LoggingHandler()));
+
+            //containerRegistry.RegisterSingleton<MobileServiceSQLiteStore>(m => new MobileServiceSQLiteStore(Path.Combine(Xamarin.Essentials.FileSystem.AppDataDirectory, "ZumoLocal.db")));
         }
     }
 }

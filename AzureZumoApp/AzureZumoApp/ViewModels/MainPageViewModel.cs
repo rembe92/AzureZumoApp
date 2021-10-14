@@ -1,5 +1,4 @@
 ﻿using AzureZumoApp.Models;
-using AzureZumoApp.Persistence;
 using Microsoft.WindowsAzure.MobileServices;
 using Microsoft.WindowsAzure.MobileServices.SQLiteStore;
 using Microsoft.WindowsAzure.MobileServices.Sync;
@@ -8,6 +7,8 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Linq;
 using System.IO;
+using System;
+using System.Diagnostics;
 
 namespace AzureZumoApp.ViewModels
 {
@@ -24,26 +25,34 @@ namespace AzureZumoApp.ViewModels
         }
         public async override void OnNavigatedTo(INavigationParameters parameters)
         {
-            client = new MobileServiceClient("https://zumo-5nfvbshhcfey2.azurewebsites.net", new LoggingHandler());
+            try
+            {
+                client = new MobileServiceClient(Constant.AzureUrl, new LoggingHandler());
 
-            mStore = new MobileServiceSQLiteStore(Path.Combine(Xamarin.Essentials.FileSystem.AppDataDirectory, "ZumoLocal.db"));
-            mStore.DefineTable<TodoItem>();
-            await client.SyncContext.InitializeAsync(mStore);
-            todoTable = client.GetSyncTable<TodoItem>();
+                mStore = new MobileServiceSQLiteStore(Path.Combine(Xamarin.Essentials.FileSystem.AppDataDirectory, "ZumoLocal.db"));
+                mStore.DefineTable<TodoItem>();
+                await client.SyncContext.InitializeAsync(mStore);
+                todoTable = client.GetSyncTable<TodoItem>();
 
-            await SynchronizeAsync();
-            var items = await todoTable.ToListAsync();
+                await SynchronizeAsync();
 
-            AzureZumoAppContext EFContext = new AzureZumoAppContext(Path.Combine(Xamarin.Essentials.FileSystem.AppDataDirectory, "ZumoLocal.db"));
-            var dd = EFContext.TodoItems.ToList();
-            EFContext.Add(new TodoItem() { Text = "EF created" });
-            await SynchronizeAsync();
+                //await todoTable.InsertAsync(
+                //    new TodoItem()
+                //    {
+                //        Text = "without bdrtzook"
+                //    });
 
-            //await todoTable.InsertAsync(new TodoItem() { Text = "without Completed" });
+                //await SynchronizeAsync();
 
+                var items = await todoTable.ToListAsync();
 
+                base.OnNavigatedTo(parameters);
 
-            base.OnNavigatedTo(parameters);
+            }
+            catch (Exception e)
+            {
+                Debugger.Break();
+            }
         }
 
         public async Task SynchronizeAsync()
