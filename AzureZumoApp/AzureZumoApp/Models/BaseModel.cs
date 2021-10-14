@@ -3,7 +3,7 @@ using System;
 
 namespace AzureZumoApp.Models
 {
-    abstract class BaseModel
+    public abstract class BaseModel
     {
         public string Id { get; set; }
 
