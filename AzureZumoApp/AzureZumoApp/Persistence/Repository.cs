@@ -42,7 +42,7 @@ namespace AzureZumoApp.Persistence
 
         public Task UpdateAsync(TEntity entity)
         {
-            throw new NotImplementedException();
+            return _table.UpdateAsync(entity);
         }
     }
 }

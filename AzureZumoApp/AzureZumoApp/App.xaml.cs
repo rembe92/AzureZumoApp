@@ -3,10 +3,12 @@ using AzureZumoApp.Persistence;
 using AzureZumoApp.Services;
 using AzureZumoApp.ViewModels;
 using AzureZumoApp.Views;
+using DryIoc;
 using Microsoft.WindowsAzure.MobileServices;
 using Microsoft.WindowsAzure.MobileServices.SQLiteStore;
 using Microsoft.WindowsAzure.MobileServices.Sync;
 using Prism;
+using Prism.DryIoc;
 using Prism.Ioc;
 using Prism.Navigation;
 using System;
@@ -51,9 +53,12 @@ namespace AzureZumoApp
             containerRegistry.Register<ITodoItemService, TodoItemService>();
             containerRegistry.Register<Synchronizer>();
 
-            containerRegistry.Register<IMobileServiceSyncTable<TodoItem>>(m => m.Resolve<IMobileServiceClient>().GetSyncTable<TodoItem>());
+            //containerRegistry.Register<IMobileServiceSyncTable<TodoItem>>(m => m.Resolve<IMobileServiceClient>().GetSyncTable<TodoItem>());
+
+            containerRegistry.Register(typeof(IMobileServiceSyncTable<>), typeof(CustomMobileServiceSyncTable<>));
 
             containerRegistry.RegisterSingleton<IMobileServiceClient>(m => new CustomMobileServiceClient(Constant.AzureUrl, new LoggingHandler()));
+
 
             //containerRegistry.RegisterSingleton<MobileServiceSQLiteStore>(m => new MobileServiceSQLiteStore(Path.Combine(Xamarin.Essentials.FileSystem.AppDataDirectory, "ZumoLocal.db")));
         }
