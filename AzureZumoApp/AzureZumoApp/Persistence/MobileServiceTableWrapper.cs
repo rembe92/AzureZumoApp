@@ -1,14 +1,11 @@
 ﻿using Microsoft.WindowsAzure.MobileServices;
-using Microsoft.WindowsAzure.MobileServices.Sync;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
-using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
 
-namespace AzureZumoApp
+namespace AzureZumoApp.Persistence
 {
     class MobileServiceTableWrapper<T> : IMobileServiceTable<T>
     {

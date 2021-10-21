@@ -4,7 +4,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Reflection;
 
-namespace AzureZumoApp
+namespace AzureZumoApp.Configurations
 {
     //https://www.andrewhoefling.com/Blog/Post/xamarin-app-configuration-control-your-app-settings
     class AppSettingsManager

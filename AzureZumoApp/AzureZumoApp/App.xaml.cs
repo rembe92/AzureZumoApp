@@ -1,14 +1,13 @@
-using AzureZumoApp.Models;
+using AzureZumoApp.Configurations;
+using AzureZumoApp.Logging;
 using AzureZumoApp.Persistence;
 using AzureZumoApp.Services;
 using AzureZumoApp.ViewModels;
 using AzureZumoApp.Views;
 using DryIoc;
 using Microsoft.WindowsAzure.MobileServices;
-using Microsoft.WindowsAzure.MobileServices.SQLiteStore;
 using Microsoft.WindowsAzure.MobileServices.Sync;
 using Prism;
-using Prism.DryIoc;
 using Prism.Ioc;
 using Prism.Navigation;
 using System;
@@ -57,9 +56,6 @@ namespace AzureZumoApp
 
             containerRegistry.Register(typeof(IMobileServiceSyncTable<>), typeof(MobileServiceSyncTableWrapper<>));
             containerRegistry.Register(typeof(IMobileServiceTable<>), typeof(MobileServiceTableWrapper<>));
-
-            var r = AppSettingsManager.Settings["MobileBackendURL"];
-
 
             containerRegistry.RegisterSingleton<IMobileServiceClient>(
                 m => new CustomMobileServiceClient(
