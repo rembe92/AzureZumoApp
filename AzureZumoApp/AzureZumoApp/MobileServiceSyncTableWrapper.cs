@@ -10,12 +10,12 @@ using System.Threading.Tasks;
 
 namespace AzureZumoApp
 {
-    class CustomMobileServiceSyncTable<T> : IMobileServiceSyncTable<T>
+    class MobileServiceSyncTableWrapper<T> : IMobileServiceSyncTable<T>
     {
         IMobileServiceSyncTable<T> table;
         MobileServiceClient _mobileServiceClient;
 
-        public CustomMobileServiceSyncTable(IMobileServiceClient mobileServiceClient)
+        public MobileServiceSyncTableWrapper(IMobileServiceClient mobileServiceClient)
         {
             _mobileServiceClient = (MobileServiceClient)mobileServiceClient;
             table = _mobileServiceClient.GetSyncTable<T>();

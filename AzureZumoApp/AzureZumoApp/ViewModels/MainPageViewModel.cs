@@ -2,26 +2,27 @@
 using System;
 using System.Diagnostics;
 using AzureZumoApp.Services;
+using AzureZumoApp.Models;
 
 namespace AzureZumoApp.ViewModels
 {
     public class MainPageViewModel : ViewModelBase
     {
-        Synchronizer _synchronizer;
+        ISynchronizer<TodoItem> _todoItemSynchronizer;
         ITodoItemService _todoItemService;
 
-        public MainPageViewModel(INavigationService navigationService, ITodoItemService todoItemService, Synchronizer synchronizer)
+        public MainPageViewModel(INavigationService navigationService, ITodoItemService todoItemService, ISynchronizer<TodoItem> todoItemSynchronizer)
             : base(navigationService)
         {
             Title = "Main Page";
             _todoItemService = todoItemService;
-            _synchronizer = synchronizer;
+            _todoItemSynchronizer = todoItemSynchronizer;
         }
         public async override void OnNavigatedTo(INavigationParameters parameters)
         {
             try
             {
-                await _synchronizer.SynchronizeAsync();
+                await _todoItemSynchronizer.SynchronizeAbsolutAsync();
 
                 var items = await _todoItemService.GetDirectory();
 

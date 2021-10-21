@@ -51,13 +51,22 @@ namespace AzureZumoApp
             containerRegistry.RegisterForNavigation<MainPage, MainPageViewModel>();
             containerRegistry.Register(typeof(IRepository<>), typeof(Repository<>));
             containerRegistry.Register<ITodoItemService, TodoItemService>();
-            containerRegistry.Register<Synchronizer>();
+            containerRegistry.Register(typeof(ISynchronizer<>), typeof(Synchronizer<>));
 
             //containerRegistry.Register<IMobileServiceSyncTable<TodoItem>>(m => m.Resolve<IMobileServiceClient>().GetSyncTable<TodoItem>());
 
-            containerRegistry.Register(typeof(IMobileServiceSyncTable<>), typeof(CustomMobileServiceSyncTable<>));
+            containerRegistry.Register(typeof(IMobileServiceSyncTable<>), typeof(MobileServiceSyncTableWrapper<>));
+            containerRegistry.Register(typeof(IMobileServiceTable<>), typeof(MobileServiceTableWrapper<>));
 
-            containerRegistry.RegisterSingleton<IMobileServiceClient>(m => new CustomMobileServiceClient(Constant.AzureUrl, new LoggingHandler()));
+            var r = AppSettingsManager.Settings["MobileBackendURL"];
+
+
+            containerRegistry.RegisterSingleton<IMobileServiceClient>(
+                m => new CustomMobileServiceClient(
+                    Path.Combine(Xamarin.Essentials.FileSystem.AppDataDirectory, AppSettingsManager.Settings["OfflineDatabaseName"]),
+                    AppSettingsManager.Settings["MobileBackendURL"], 
+                    new LoggingHandler())
+                );
 
 
             //containerRegistry.RegisterSingleton<MobileServiceSQLiteStore>(m => new MobileServiceSQLiteStore(Path.Combine(Xamarin.Essentials.FileSystem.AppDataDirectory, "ZumoLocal.db")));

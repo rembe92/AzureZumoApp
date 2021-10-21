@@ -1,32 +1,44 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using System.Net.Http;
-using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
 
 namespace AzureZumoApp
 {
-    class LoggingHandler : DelegatingHandler
+    //https://github.com/Azure-Samples/app-service-mobile-dotnet-todo-list-files/blob/master/src/client/MobileAppsFilesSample/Helpers/LoggingHandler.cs#L63
+    public class LoggingHandler : DelegatingHandler
     {
-        public LoggingHandler() : base() { }
-        public LoggingHandler(HttpMessageHandler innerHandler) : base(innerHandler) { }
+        private bool logRequestResponseBody;
 
-        protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken token)
+        public LoggingHandler(bool logRequestResponseBody = false)
         {
-            Debug.WriteLine($"[HTTP] >>> {request}");
-            if (request.Content != null)
+            this.logRequestResponseBody = logRequestResponseBody;
+        }
+
+        protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, System.Threading.CancellationToken cancellationToken)
+        {
+            Debug.WriteLine("Request: {0} {1}", request.Method, request.RequestUri.ToString());
+
+            if (logRequestResponseBody && request.Content != null)
             {
-                Debug.WriteLine($"[HTTP] >>> {await request.Content.ReadAsStringAsync().ConfigureAwait(false)}");
+                var requestContent = await request.Content.ReadAsStringAsync();
+                Debug.WriteLine(requestContent);
             }
 
-            HttpResponseMessage response = await base.SendAsync(request, token).ConfigureAwait(false);
+            Debug.WriteLine("HEADERS");
 
-            Debug.WriteLine($"[HTTP] <<< {response}");
-            if (response.Content != null)
+            foreach (var header in request.Headers)
             {
-                Debug.WriteLine($"[HTTP] <<< {await response.Content.ReadAsStringAsync().ConfigureAwait(false)}");
+                Debug.WriteLine(string.Format("{0}:{1}", header.Key, string.Join(",", header.Value)));
+            }
+
+            var response = await base.SendAsync(request, cancellationToken);
+
+            Debug.WriteLine("Response: {0}", response.StatusCode);
+
+            if (logRequestResponseBody)
+            {
+                var responseContent = await response.Content.ReadAsStringAsync();
+                Debug.WriteLine(responseContent);
             }
 
             return response;
