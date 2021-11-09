@@ -13,9 +13,10 @@ namespace AzureZumoApp
         IMobileServiceSyncTable<T> _mobileServiceSyncTable;
         IMobileServiceClient _client;
 
-        public Synchronizer(IMobileServiceSyncTable<T> mobileServiceSyncTable)
+        public Synchronizer(IMobileServiceSyncTable<T> mobileServiceSyncTable, IMobileServiceClient client)
         {
             _mobileServiceSyncTable = mobileServiceSyncTable;
+            _client = client;
         }
 
         private async Task<IReadOnlyCollection<MobileServiceTableOperationError>> SynchronizeAsync(string queryId, Expression<Func<T, bool>> predicate)
@@ -58,6 +59,30 @@ namespace AzureZumoApp
         public Task<IReadOnlyCollection<MobileServiceTableOperationError>> SynchronizeIncrementalAsync(string queryId, Expression<Func<T, bool>> predicate)
         {
             return SynchronizeAsync(queryId, predicate);
+        }
+
+        public async Task<IReadOnlyCollection<MobileServiceTableOperationError>> PushAsync()
+        {
+            IReadOnlyCollection<MobileServiceTableOperationError> syncErrors = null;
+
+            try
+            {
+                await _client.SyncContext.PushAsync();
+            }
+            catch (MobileServicePushFailedException error)
+            {
+                if (error.PushResult != null)
+                {
+                    syncErrors = error.PushResult.Errors;
+                }
+            }
+
+            return syncErrors;
+        }
+
+        public long GetPendingOperations()
+        {
+            return _client.SyncContext.PendingOperations;
         }
     }
 }

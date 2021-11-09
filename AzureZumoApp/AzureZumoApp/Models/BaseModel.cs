@@ -14,6 +14,6 @@ namespace AzureZumoApp.Models
         public DateTimeOffset? CreatedAt { get; set; }
 
         [Version]
-        public string Version { get; set; }
+        public byte[] Version { get; set; }
     }
 }

@@ -23,5 +23,15 @@ namespace AzureZumoApp.Services
         {
             return todoItemRepository.GetDirectory();
         }
+
+        public Task RefreshAsync(TodoItem item)
+        {
+            return todoItemRepository.RefreshAsync(item);
+        }
+
+        public Task UpdateAsync(TodoItem item)
+        {
+            return todoItemRepository.UpdateAsync(item);
+        }
     }
 }

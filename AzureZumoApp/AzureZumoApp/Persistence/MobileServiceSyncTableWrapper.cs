@@ -113,7 +113,7 @@ namespace AzureZumoApp.Persistence
 
         public Task RefreshAsync(T instance)
         {
-            throw new NotImplementedException();
+            return table.RefreshAsync(instance);
         }
 
         public IMobileServiceTableQuery<U> Select<U>(Expression<Func<T, U>> selector)
