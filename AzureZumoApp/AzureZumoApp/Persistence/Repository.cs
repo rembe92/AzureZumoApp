@@ -44,5 +44,10 @@ namespace AzureZumoApp.Persistence
         {
             return _table.UpdateAsync(entity);
         }
+
+        public Task RefreshAsync(TEntity entity)
+        {
+            return _table.RefreshAsync(entity);
+        }
     }
 }

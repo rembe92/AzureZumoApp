@@ -16,5 +16,7 @@ namespace AzureZumoApp.Persistence
         Task<IEnumerable<TEntity>> GetDirectory();
 
         Task<TEntity> GetById(string id);
+
+        Task RefreshAsync(TEntity entity);
     }
 }

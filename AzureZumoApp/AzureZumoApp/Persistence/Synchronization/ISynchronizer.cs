@@ -14,6 +14,10 @@ namespace AzureZumoApp
         
         Task<IReadOnlyCollection<MobileServiceTableOperationError>> SynchronizeAbsolutAsync();
 
+        Task<IReadOnlyCollection<MobileServiceTableOperationError>> PushAsync();
+
         Task<IReadOnlyCollection<MobileServiceTableOperationError>> SynchronizeAbsolutAsync(Expression<Func<T, bool>> predicate);
+
+        long GetPendingOperations();
     }
 }
