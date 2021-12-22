@@ -60,9 +60,10 @@ namespace AzureZumoApp
             containerRegistry.RegisterSingleton<IMobileServiceClient>(
                 m => new CustomMobileServiceClient(
                     Path.Combine(Xamarin.Essentials.FileSystem.AppDataDirectory, AppSettingsManager.Settings["OfflineDatabaseName"]),
-                    AppSettingsManager.Settings["MobileBackendURL"], 
+                    AppSettingsManager.Settings["MobileBackendURL"],
+                    //new UriPathHandler(),
                     new LoggingHandler())
-                );
+                ); ;
 
 
             //containerRegistry.RegisterSingleton<MobileServiceSQLiteStore>(m => new MobileServiceSQLiteStore(Path.Combine(Xamarin.Essentials.FileSystem.AppDataDirectory, "ZumoLocal.db")));

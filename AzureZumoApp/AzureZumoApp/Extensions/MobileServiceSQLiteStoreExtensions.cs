@@ -1,8 +1,5 @@
 ﻿using AzureZumoApp.Models;
 using Microsoft.WindowsAzure.MobileServices.SQLiteStore;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace AzureZumoApp.Extensions
 {

@@ -37,6 +37,11 @@ namespace AzureZumoApp
                 }
             }
 
+            //foreach (var error in syncErrors)
+            //{
+            //    error.u
+            //}
+
             return syncErrors;
         }
 
